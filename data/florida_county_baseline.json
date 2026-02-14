@@ -1,0 +1,68 @@
+[
+  {
+    "id": "miami-dade",
+    "county": "Miami-Dade County",
+    "population": 2839000,
+    "flood_risk_index": 79,
+    "water_quality_index": 62,
+    "impervious_surface_pct": 42,
+    "low_elevation_pop_pct": 31,
+    "septic_dependence_pct": 12,
+    "tree_canopy_index": 38
+  },
+  {
+    "id": "broward",
+    "county": "Broward County",
+    "population": 1963000,
+    "flood_risk_index": 74,
+    "water_quality_index": 64,
+    "impervious_surface_pct": 44,
+    "low_elevation_pop_pct": 26,
+    "septic_dependence_pct": 9,
+    "tree_canopy_index": 36
+  },
+  {
+    "id": "hillsborough",
+    "county": "Hillsborough County",
+    "population": 1542000,
+    "flood_risk_index": 67,
+    "water_quality_index": 66,
+    "impervious_surface_pct": 35,
+    "low_elevation_pop_pct": 18,
+    "septic_dependence_pct": 21,
+    "tree_canopy_index": 41
+  },
+  {
+    "id": "duval",
+    "county": "Duval County",
+    "population": 1023000,
+    "flood_risk_index": 58,
+    "water_quality_index": 69,
+    "impervious_surface_pct": 29,
+    "low_elevation_pop_pct": 16,
+    "septic_dependence_pct": 18,
+    "tree_canopy_index": 46
+  },
+  {
+    "id": "lee",
+    "county": "Lee County",
+    "population": 835000,
+    "flood_risk_index": 72,
+    "water_quality_index": 61,
+    "impervious_surface_pct": 28,
+    "low_elevation_pop_pct": 24,
+    "septic_dependence_pct": 27,
+    "tree_canopy_index": 43
+  },
+  {
+    "id": "pinellas",
+    "county": "Pinellas County",
+    "population": 962000,
+    "flood_risk_index": 76,
+    "water_quality_index": 63,
+    "impervious_surface_pct": 47,
+    "low_elevation_pop_pct": 22,
+    "septic_dependence_pct": 8,
+    "tree_canopy_index": 34
+  }
+]

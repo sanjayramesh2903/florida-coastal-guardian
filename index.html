@@ -1,555 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Florida Coastal Guardian - Water Safety & Conservation | Congressional App Challenge 2024</title>
-    <link rel="stylesheet" href="guardian-styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TideTurner Florida | Live Coastal Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <i class="fas fa-water"></i>
-                <h1>Florida Coastal Guardian</h1>
-            </div>
-            <nav class="nav">
-                <button class="nav-btn active" data-section="dashboard">Dashboard</button>
-                <button class="nav-btn" data-section="map">Live Map</button>
-                <button class="nav-btn" data-section="alerts">Alerts</button>
-                <button class="nav-btn" data-section="conservation">Conservation</button>
-                <button class="nav-btn" data-section="education">Learn</button>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <!-- Dashboard Section -->
-        <section id="dashboard" class="section active">
-            <div class="dashboard-header">
-                <h2>Florida Water Safety Dashboard</h2>
-                <div class="last-updated">
-                    <i class="fas fa-clock"></i>
-                    <span id="update-time">Last updated: Just now</span>
-                </div>
-            </div>
-
-            <div class="alert-banner">
-                <div class="alert-content">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div class="alert-text">
-                        <strong>Red Tide Alert:</strong> Moderate respiratory irritation reported in Pinellas County beaches
-                    </div>
-                    <button class="alert-close">&times;</button>
-                </div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon water-quality">
-                        <i class="fas fa-tint"></i>
-                    </div>
-                    <h3>Water Quality</h3>
-                    <div class="stat-value" id="water-quality-score">Good</div>
-                    <div class="stat-subtitle">Statewide Average</div>
-                    <div class="stat-trend positive">
-                        <i class="fas fa-arrow-up"></i> 12% improvement
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon red-tide">
-                        <i class="fas fa-biohazard"></i>
-                    </div>
-                    <h3>Red Tide Risk</h3>
-                    <div class="stat-value" id="red-tide-level">Low</div>
-                    <div class="stat-subtitle">Gulf Coast</div>
-                    <div class="stat-trend neutral">
-                        <i class="fas fa-minus"></i> Stable
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon water-level">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Water Levels</h3>
-                    <div class="stat-value" id="water-level-status">Normal</div>
-                    <div class="stat-subtitle">Aquifer Levels</div>
-                    <div class="stat-trend negative">
-                        <i class="fas fa-arrow-down"></i> 8% below average
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon conservation">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Conservation</h3>
-                    <div class="stat-value" id="conservation-status">Active</div>
-                    <div class="stat-subtitle">Water Restrictions</div>
-                    <div class="stat-trend positive">
-                        <i class="fas fa-check"></i> Meeting goals
-                    </div>
-                </div>
-            </div>
-
-            <div class="quick-actions">
-                <h3>Quick Actions</h3>
-                <div class="action-buttons">
-                    <button class="action-btn primary" onclick="scrollToSection('map')">
-                        <i class="fas fa-map-marked-alt"></i>
-                        View Live Map
-                    </button>
-                    <button class="action-btn secondary" onclick="scrollToSection('alerts')">
-                        <i class="fas fa-bell"></i>
-                        Sign Up for Alerts
-                    </button>
-                    <button class="action-btn secondary" onclick="scrollToSection('conservation')">
-                        <i class="fas fa-hand-holding-water"></i>
-                        Conservation Tips
-                    </button>
-                    <button class="action-btn secondary" onclick="openReportModal()">
-                        <i class="fas fa-flag"></i>
-                        Report Issue
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Live Map Section -->
-        <section id="map" class="section">
-            <div class="map-header">
-                <h2>Live Water Quality Map</h2>
-                <div class="map-controls">
-                    <div class="legend">
-                        <div class="legend-item">
-                            <span class="legend-color excellent"></span>
-                            <span>Excellent</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color good"></span>
-                            <span>Good</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color moderate"></span>
-                            <span>Moderate</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color poor"></span>
-                            <span>Poor</span>
-                        </div>
-                    </div>
-                    <div class="map-filters">
-                        <select id="map-filter">
-                            <option value="all">All Conditions</option>
-                            <option value="water-quality">Water Quality</option>
-                            <option value="red-tide">Red Tide</option>
-                            <option value="flood-risk">Flood Risk</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="map-container">
-                <div id="florida-map"></div>
-                <div class="map-info-panel">
-                    <h4>Location Details</h4>
-                    <div id="location-info">
-                        <p>Click on a location to see detailed water quality information</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Alerts Section -->
-        <section id="alerts" class="section">
-            <div class="alerts-header">
-                <h2>Water Safety Alerts</h2>
-                <div class="alert-filters">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="red-tide">Red Tide</button>
-                    <button class="filter-btn" data-filter="water-quality">Water Quality</button>
-                    <button class="filter-btn" data-filter="flood">Flood Risk</button>
-                    <button class="filter-btn" data-filter="conservation">Conservation</button>
-                </div>
-            </div>
-
-            <div class="alerts-list">
-                <div class="alert-item high" data-type="red-tide">
-                    <div class="alert-icon">
-                        <i class="fas fa-biohazard"></i>
-                    </div>
-                    <div class="alert-content">
-                        <h4>High Red Tide Concentration</h4>
-                        <p>Sarasota County beaches - Respiratory irritation expected. Avoid beach activities if you have respiratory conditions.</p>
-                        <div class="alert-meta">
-                            <span class="location"><i class="fas fa-map-marker-alt"></i> Sarasota County</span>
-                            <span class="time"><i class="fas fa-clock"></i> 2 hours ago</span>
-                        </div>
-                    </div>
-                    <div class="alert-severity high">HIGH</div>
-                </div>
-
-                <div class="alert-item medium" data-type="water-quality">
-                    <div class="alert-icon">
-                        <i class="fas fa-tint"></i>
-                    </div>
-                    <div class="alert-content">
-                        <h4>Moderate Water Quality Advisory</h4>
-                        <p>Bacteria levels elevated in St. Johns River. Avoid swimming and water contact activities.</p>
-                        <div class="alert-meta">
-                            <span class="location"><i class="fas fa-map-marker-alt"></i> Jacksonville</span>
-                            <span class="time"><i class="fas fa-clock"></i> 6 hours ago</span>
-                        </div>
-                    </div>
-                    <div class="alert-severity medium">MEDIUM</div>
-                </div>
-
-                <div class="alert-item low" data-type="conservation">
-                    <div class="alert-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <div class="alert-content">
-                        <h4>Water Conservation Reminder</h4>
-                        <p>Phase I water shortage in effect. Limit lawn watering to 2 days per week.</p>
-                        <div class="alert-meta">
-                            <span class="location"><i class="fas fa-map-marker-alt"></i> Northeast Florida</span>
-                            <span class="time"><i class="fas fa-clock"></i> 1 day ago</span>
-                        </div>
-                    </div>
-                    <div class="alert-severity low">LOW</div>
-                </div>
-            </div>
-
-            <div class="alert-signup">
-                <div class="signup-content">
-                    <h3>Stay Informed</h3>
-                    <p>Get real-time alerts for your area</p>
-                    <form class="signup-form">
-                        <input type="email" placeholder="Enter your email" required>
-                        <input type="text" placeholder="Your county (e.g., Miami-Dade)">
-                        <button type="submit" class="signup-btn">
-                            <i class="fas fa-bell"></i> Subscribe to Alerts
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- Conservation Section -->
-        <section id="conservation" class="section">
-            <div class="conservation-header">
-                <h2>Water Conservation Center</h2>
-                <p>Every drop counts. Learn how you can help protect Florida's precious water resources.</p>
-            </div>
-
-            <div class="conservation-status">
-                <div class="status-card">
-                    <div class="status-icon drought">
-                        <i class="fas fa-sun"></i>
-                    </div>
-                    <div class="status-info">
-                        <h3>Current Drought Status</h3>
-                        <p class="status-level">Moderate Drought Conditions</p>
-                        <p>Several counties experiencing below-average rainfall</p>
-                    </div>
-                </div>
-
-                <div class="status-card">
-                    <div class="status-icon restrictions">
-                        <i class="fas fa-shower"></i>
-                    </div>
-                    <div class="status-info">
-                        <h3>Watering Restrictions</h3>
-                        <p class="status-level">Phase I - Voluntary Conservation</p>
-                        <p>Limited to 2 days per week, before 10 AM or after 4 PM</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="conservation-tips">
-                <h3>How You Can Help</h3>
-                <div class="tips-grid">
-                    <div class="tip-card">
-                        <div class="tip-icon">
-                            <i class="fas fa-faucet"></i>
-                        </div>
-                        <h4>Indoor Conservation</h4>
-                        <ul>
-                            <li>Fix leaky faucets immediately</li>
-                            <li>Install low-flow showerheads</li>
-                            <li>Run full loads of laundry and dishes</li>
-                            <li>Turn off water while brushing teeth</li>
-                        </ul>
-                    </div>
-
-                    <div class="tip-card">
-                        <div class="tip-icon">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <h4>Outdoor Conservation</h4>
-                        <ul>
-                            <li>Water lawns early morning or evening</li>
-                            <li>Use native plants that require less water</li>
-                            <li>Install drip irrigation systems</li>
-                            <li>Use mulch to retain soil moisture</li>
-                        </ul>
-                    </div>
-
-                    <div class="tip-card">
-                        <div class="tip-icon">
-                            <i class="fas fa-recycle"></i>
-                        </div>
-                        <h4>Smart Practices</h4>
-                        <ul>
-                            <li>Collect rainwater for gardens</li>
-                            <li>Use brooms instead of hoses to clean</li>
-                            <li>Check for pool leaks regularly</li>
-                            <li>Install smart irrigation controllers</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="water-calculator">
-                <h3>Water Usage Calculator</h3>
-                <div class="calculator-form">
-                    <div class="form-group">
-                        <label>Household Size:</label>
-                        <input type="number" id="household-size" min="1" max="10" value="4">
-                    </div>
-                    <div class="form-group">
-                        <label>Daily Showers:</label>
-                        <input type="number" id="daily-showers" min="1" max="20" value="4">
-                    </div>
-                    <div class="form-group">
-                        <label>Lawn Watering (per week):</label>
-                        <select id="lawn-watering">
-                            <option value="0">No lawn watering</option>
-                            <option value="1">1-2 times</option>
-                            <option value="2" selected>3-4 times</option>
-                            <option value="3">5+ times</option>
-                        </select>
-                    </div>
-                    <button class="calculate-btn" onclick="calculateWaterUsage()">
-                        <i class="fas fa-calculator"></i> Calculate Usage
-                    </button>
-                    <div id="water-result" class="result-box"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="section">
-            <div class="education-header">
-                <h2>Learn About Florida's Water Ecosystems</h2>
-                <p>Understanding our water resources is the first step to protecting them.</p>
-            </div>
-
-            <div class="education-grid">
-                <div class="edu-card">
-                    <div class="edu-image">
-                        <i class="fas fa-biohazard"></i>
-                    </div>
-                    <h3>Understanding Red Tide</h3>
-                    <p>Red tide is caused by Karenia brevis, a microscopic alga that produces powerful neurotoxins. Learn how it affects marine life and human health.</p>
-                    <div class="edu-facts">
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Can cause respiratory irritation in humans</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Kills fish and marine mammals</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Most common from September to February</span>
-                        </div>
-                    </div>
-                    <button class="learn-more-btn">Learn More</button>
-                </div>
-
-                <div class="edu-card">
-                    <div class="edu-image">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h3>Florida's Aquifer System</h3>
-                    <p>The Floridan Aquifer is one of the most productive aquifers in the world, providing drinking water to millions of Floridians.</p>
-                    <div class="edu-facts">
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Covers 100,000 square miles</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Provides 90% of Florida's drinking water</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Threatened by over-pumping and pollution</span>
-                        </div>
-                    </div>
-                    <button class="learn-more-btn">Learn More</button>
-                </div>
-
-                <div class="edu-card">
-                    <div class="edu-image">
-                        <i class="fas fa-fish"></i>
-                    </div>
-                    <h3>Marine Ecosystems</h3>
-                    <p>Florida's coastal waters support diverse marine ecosystems including coral reefs, seagrass beds, and mangrove forests.</p>
-                    <div class="edu-facts">
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Florida Reef is the only barrier reef in US</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Seagrass beds support fish nurseries</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Mangroves protect coastlines from erosion</span>
-                        </div>
-                    </div>
-                    <button class="learn-more-btn">Learn More</button>
-                </div>
-
-                <div class="edu-card">
-                    <div class="edu-image">
-                        <i class="fas fa-cloud-rain"></i>
-                    </div>
-                    <h3>Water Cycle & Climate</h3>
-                    <p>Florida's water cycle is influenced by tropical weather patterns, sea level rise, and changing precipitation patterns.</p>
-                    <div class="edu-facts">
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Average rainfall: 54 inches per year</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>Sea level rising 1 inch every 3 years</span>
-                        </div>
-                        <div class="fact-item">
-                            <i class="fas fa-info-circle"></i>
-                            <span>More intense droughts and floods expected</span>
-                        </div>
-                    </div>
-                    <button class="learn-more-btn">Learn More</button>
-                </div>
-            </div>
-
-            <div class="resources-section">
-                <h3>Additional Resources</h3>
-                <div class="resources-grid">
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-file-pdf"></i>
-                        <span>Florida Water Management Guide</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-video"></i>
-                        <span>Red Tide Documentary</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Water Conservation Course</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-phone"></i>
-                        <span>Emergency Contacts</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Report Modal -->
-    <div id="report-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Report Water Issue</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <form class="report-form">
-                <div class="form-group">
-                    <label>Issue Type:</label>
-                    <select id="issue-type" required>
-                        <option value="">Select issue type</option>
-                        <option value="red-tide">Red Tide Sighting</option>
-                        <option value="pollution">Water Pollution</option>
-                        <option value="fish-kill">Fish Kill</option>
-                        <option value="odor">Unusual Odor</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Location:</label>
-                    <input type="text" id="report-location" placeholder="Beach name, park, or address" required>
-                </div>
-                <div class="form-group">
-                    <label>Description:</label>
-                    <textarea id="report-description" rows="4" placeholder="Please describe what you observed..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Contact Email (optional):</label>
-                    <input type="email" id="report-email" placeholder="your@email.com">
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-paper-plane"></i> Submit Report
-                </button>
-            </form>
-        </div>
+  <div class="noise"></div>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◉</span>
+      <div>
+        <strong>TideTurner Florida</strong>
+        <p>Live Coastal Intelligence + Policy Studio</p>
+      </div>
     </div>
+    <nav>
+      <button class="tab active" data-view="overview">Overview</button>
+      <button class="tab" data-view="live-data">Live Data</button>
+      <button class="tab" data-view="studio">Policy Studio</button>
+      <button class="tab" data-view="community">Community Board</button>
+    </nav>
+  </header>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Florida Coastal Guardian</h4>
-                <p>Protecting Florida's water resources through technology and community engagement.</p>
-                <p><strong>Created by:</strong> Sanjay Krishnan</p>
-                <p><strong>Congressional App Challenge 2024</strong></p>
-                <p><strong>Florida District 7 Submission</strong></p>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#alerts">Current Alerts</a></li>
-                    <li><a href="#map">Live Map</a></li>
-                    <li><a href="#conservation">Conservation Tips</a></li>
-                    <li><a href="#education">Learn More</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Data Sources</h4>
-                <ul>
-                    <li>Florida Fish & Wildlife Commission</li>
-                    <li>Florida Department of Health</li>
-                    <li>Water Management Districts</li>
-                    <li>National Weather Service</li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>For emergencies: Call 911</p>
-                <p>Environmental issues: 1-800-320-0519</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
+  <main>
+    <section id="overview" class="view active">
+      <div class="hero card">
+        <div>
+          <p class="eyebrow">Congressional App Challenge Concept</p>
+          <h1>Build Florida resilience from real conditions, not fake numbers.</h1>
+          <p class="lede">This app mixes live NOAA weather alerts, live ocean conditions near Florida, and official Florida county exposure data. Then it lets users design interventions and see modeled outcomes in one place.</p>
+          <div class="hero-actions">
+            <button id="jump-live" class="btn btn-primary">Open Live Data</button>
+            <button id="jump-studio" class="btn btn-ghost">Launch Policy Studio</button>
+          </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Florida Coastal Guardian. Congressional App Challenge Project - Florida District 7.</p>
-            <p>Created by Sanjay Krishnan for the 2026 Congressional App Challenge.</p>
-        </div>
-    </footer>
+        <div class="hero-metrics" id="headline-metrics"></div>
+      </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="guardian-script.js"></script>
+      <div class="split">
+        <article class="card">
+          <h2>Why Florida needs this</h2>
+          <p>Residents and students hear about flooding, harmful algal blooms, and storm impacts, but planning tools are often inaccessible. TideTurner translates live data into neighborhood-level choices people can actually debate.</p>
+        </article>
+        <article class="card">
+          <h2>Real sources used</h2>
+          <ul class="clean-list">
+            <li>NOAA/NWS active alerts API for Florida.</li>
+            <li>Open-Meteo Marine API for offshore wave and sea temperature near Florida coasts.</li>
+            <li>Official county baseline dataset in this repo (compiled from public county-level resilience references).</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="live-data" class="view">
+      <div class="grid-2">
+        <section class="card">
+          <div class="heading-row">
+            <h2>Florida Live Signals</h2>
+            <span id="updated-pill">Updating...</span>
+          </div>
+          <div class="kpi-grid live-kpis">
+            <div class="kpi"><p>Active NWS Alerts (FL)</p><strong id="kpi-alerts">--</strong></div>
+            <div class="kpi"><p>Max Alert Severity</p><strong id="kpi-severity">--</strong></div>
+            <div class="kpi"><p>Mean Wave Height</p><strong id="kpi-wave">--</strong></div>
+            <div class="kpi"><p>Mean Sea Temp</p><strong id="kpi-temp">--</strong></div>
+          </div>
+          <p id="live-message" class="narrative"></p>
+          <ul id="alert-list" class="feed"></ul>
+        </section>
+
+        <section class="card">
+          <h2>County Coastal Baseline</h2>
+          <p class="lede small">Select a county to prefill the Policy Studio with real local baseline factors.</p>
+          <div class="county-controls">
+            <select id="county-select"></select>
+            <button id="apply-county" class="btn btn-primary">Apply to Scenario</button>
+          </div>
+          <div id="county-facts" class="county-facts"></div>
+          <canvas id="baseline-chart" width="760" height="180" aria-label="County baseline chart"></canvas>
+        </section>
+      </div>
+    </section>
+
+    <section id="studio" class="view">
+      <div class="grid-2">
+        <aside class="card controls">
+          <div class="heading-row">
+            <h2>Policy Studio</h2>
+            <span id="budget-pill">Budget left: $42M</span>
+          </div>
+          <p>Allocate a hypothetical <strong>$120M</strong> county package.</p>
+
+          <label>Living shorelines <span id="shoreline-v">20</span>%</label>
+          <input type="range" id="shoreline" min="0" max="100" value="20" />
+
+          <label>Stormwater upgrades <span id="stormwater-v">25</span>%</label>
+          <input type="range" id="stormwater" min="0" max="100" value="25" />
+
+          <label>Home elevation grants <span id="elevation-v">15</span>%</label>
+          <input type="range" id="elevation" min="0" max="100" value="15" />
+
+          <label>Heat + shade corridors <span id="shade-v">10</span>%</label>
+          <input type="range" id="shade" min="0" max="100" value="10" />
+
+          <label>Septic-to-sewer conversion <span id="septic-v">28</span>%</label>
+          <input type="range" id="septic" min="0" max="100" value="28" />
+
+          <button id="optimize" class="btn btn-primary">Auto-balance for resilience</button>
+        </aside>
+
+        <section class="card outputs">
+          <h2>Scenario Outcomes (2040)</h2>
+          <div class="kpi-grid">
+            <div class="kpi"><p>Flooded road days</p><strong id="flood">--</strong></div>
+            <div class="kpi"><p>Annual loss per household</p><strong id="loss">--</strong></div>
+            <div class="kpi"><p>Water quality index</p><strong id="water">--</strong></div>
+            <div class="kpi"><p>Livability score</p><strong id="score">--</strong></div>
+          </div>
+          <div class="bar-wrap">
+            <p>Neighborhood stress</p>
+            <div class="bar"><span id="stress-bar"></span></div>
+          </div>
+          <p id="narrative" class="narrative"></p>
+          <canvas id="spark" width="760" height="180" aria-label="Projection chart"></canvas>
+        </section>
+      </div>
+    </section>
+
+    <section id="community" class="view">
+      <div class="card">
+        <h2>Community Board</h2>
+        <p>Post a short proposal and vote on ideas you want local leaders to test in the studio.</p>
+        <form id="idea-form" class="idea-form">
+          <input id="idea-title" maxlength="60" placeholder="Proposal title (e.g., Cool Corridors for Little Haiti)" required />
+          <textarea id="idea-detail" maxlength="180" placeholder="One sentence describing your plan." required></textarea>
+          <button class="btn btn-primary" type="submit">Post idea</button>
+        </form>
+        <div id="idea-list" class="idea-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Built for Florida civic innovation • Data: NWS, Open-Meteo Marine, county baseline file in repo
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
